@@ -1,3 +1,5 @@
+import processing.serial.*;
+
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
@@ -8,8 +10,7 @@ import ddf.minim.ugens.*;
 int nivel = 0;
 
 boolean carregar = false;
-boolean rectOver = false;
-boolean circleOver = false;
+boolean[] rectOver = new boolean[5];
 boolean isPlaying = false;
 
 File selectFile;
@@ -35,22 +36,23 @@ void draw() {
   if (nivel == 0) {
     menu();
   } else if (nivel == 1) {
+    escolha();
+  } else if (nivel == 2) {
     base();
     desenharBotoes();
-  } else if (nivel == 2) {
+  } else if (nivel == 3) {
     tipo();
   }
 }
 
 void mousePressed() {
-  if (rectOver) {
-    if (selectFile == null) {
-      selectInput("Select a file to process:", "processSelectedFile");
+  for (int i = 0; i < 5; i++) {
+    if (rectOver[i]) {
+      if (selectFile == null) {
+        selectInput("Select a file to process:", "processSelectedFile");
+        break; // Sair do loop após encontrar um retângulo pressionado
+      }
     }
-  }
-
-  if (circleOver) {
-    nivel = 1;
   }
 
   if (player != null) {

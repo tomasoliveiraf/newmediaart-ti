@@ -1,5 +1,4 @@
 
-
 void setupBotoes() {
   playButton = new Button(width / 2 - 50, height - 100, 100, 50, "Play");
   stopButton = new Button(width / 2 + 50, height - 100, 100, 50, "Stop");

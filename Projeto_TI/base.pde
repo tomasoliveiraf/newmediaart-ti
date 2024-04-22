@@ -27,7 +27,7 @@ void desenharLinhas() {
       float amplitude = fft.getBand(i) * 2;
 
       
-      float y2 = constrain(height / 2 - amplitude, 0, height - 200);
+      float y2 = constrain(width / 2 - amplitude, 0, height - 200);
 
       strokeWeight(amplitude/2);
       stroke(0);

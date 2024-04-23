@@ -2,11 +2,11 @@
 int[] rectX = new int[5];
 int rectY;
 String[] songNames = {
-  "Guita Pimpolho - AI oh mano.mp3",
+  "Angerfist - Street Fighter.mp3",
   "Guita Pimpolho - Baila Morena.mp3",
-  "GUITA PIMPOLHO  FT HELDER KICKER Chorei Amargo.mp3",
-  "GUITA PIMPOLHO - MELON CELESTE.mp3",
-  "GUITA PIMPOLHO FT ANDRÉ FILIPE - TIKTOK OFICIAL.mp3"
+  "carolina deslandes - paz drill remix.mp3",
+  "MARIACHI FUNK.mp3",
+  "Xutos e Pontapés - Ai Se Ele Cai.mp3"
 };
 
 void carregarescolha() {

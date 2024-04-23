@@ -37,11 +37,11 @@ void setup() {
   for (int i = 0; i < songNames.length; i++) {
     songs[i] = minim.loadFile(songNames[i], 1024);
 
-    songs[0] = minim.loadFile("Guita Pimpolho - AI oh mano.mp3");
+    songs[0] = minim.loadFile("Angerfist - Street Fighter.mp3");
     songs[1] = minim.loadFile("Guita Pimpolho - Baila Morena.mp3");
-    songs[2] = minim.loadFile("GUITA PIMPOLHO  FT HELDER KICKER Chorei Amargo.mp3");
-    songs[3] = minim.loadFile("GUITA PIMPOLHO - MELON CELESTE.mp3");
-    songs[4] = minim.loadFile("GUITA PIMPOLHO FT ANDRÉ FILIPE - TIKTOK OFICIAL.mp3");
+    songs[2] = minim.loadFile("carolina deslandes - paz drill remix.mp3");
+    songs[3] = minim.loadFile("MARIACHI FUNK.mp3");
+    songs[4] = minim.loadFile("Xutos e Pontapés - Ai Se Ele Cai.mp3");
   }
 }
 

@@ -1,3 +1,4 @@
+
 import processing.serial.*;
 
 import ddf.minim.*;
@@ -15,18 +16,33 @@ boolean isPlaying = false;
 
 File selectFile;
 Minim minim;
-AudioPlayer player;
+AudioPlayer[] songs = new AudioPlayer[5];
 FFT fft;
+/*
 Button playButton;
 Button stopButton;
+*/
+AudioPlayer player;
+int currentSong = -1;
+
 
 void setup() {
   size(800, 800);
 
   minim = new Minim(this);
-
+/*
   playButton = new Button(width / 2 - 50, height - 100, 100, 50, "Play");
   stopButton = new Button(width / 2 + 50, height - 100, 100, 50, "Stop");
+*/
+  for (int i = 0; i < songNames.length; i++) {
+    songs[i] = minim.loadFile(songNames[i], 1024);
+
+    songs[0] = minim.loadFile("Guita Pimpolho - AI oh mano.mp3");
+    songs[1] = minim.loadFile("Guita Pimpolho - Baila Morena.mp3");
+    songs[2] = minim.loadFile("GUITA PIMPOLHO  FT HELDER KICKER Chorei Amargo.mp3");
+    songs[3] = minim.loadFile("GUITA PIMPOLHO - MELON CELESTE.mp3");
+    songs[4] = minim.loadFile("GUITA PIMPOLHO FT ANDRÉ FILIPE - TIKTOK OFICIAL.mp3");
+  }
 }
 
 void draw() {
@@ -39,7 +55,7 @@ void draw() {
     escolha();
   } else if (nivel == 2) {
     base();
-    desenharBotoes();
+    //desenharBotoes();
   } else if (nivel == 3) {
     tipo();
   }
@@ -48,51 +64,41 @@ void draw() {
 void mousePressed() {
   for (int i = 0; i < 5; i++) {
     if (rectOver[i]) {
-      if (selectFile == null) {
-        selectInput("Select a file to process:", "processSelectedFile");
-        break; // Sair do loop após encontrar um retângulo pressionado
+      selectFile = new File(dataPath(songNames[i]));
+      if (selectFile.exists()) {
+        currentSong = i;
+        carregarbase();
+        nivel = 2;
       }
-    }
-  }
 
-  if (player != null) {
-    if (playButton.isOver()) {
-      playMusic();
-      println("Botão Play pressionado.");
+      break;
     }
-
-    if (stopButton.isOver()) {
-      stopMusic();
-      println("Botão Stop pressionado.");
-    }
-  } else {
-    println("Arquivo de som não carregado.");
   }
 }
 
-void processSelectedFile(File selection) {
-  if (selection == null) {
-    println("Nenhum arquivo selecionado.");
-  } else {
-    selectFile = selection;
-    player = minim.loadFile(selectFile.getAbsolutePath(), 1024);
-    fft = new FFT(player.bufferSize(), player.sampleRate());
-    carregarbase();
-  }
-}
 
 void playMusic() {
-  if (player != null && !isPlaying) {
-    player.play();
+  if (songs != null && !isPlaying) {
+    songs[currentSong].play();
     isPlaying = true;
-    println("Música a tocar.");
   }
 }
 
 void stopMusic() {
-  if (player != null && player.isPlaying()) {
-    player.pause();
+  if (songs != null && songs[currentSong].isPlaying()) {
+    songs[currentSong].pause();
     isPlaying = false;
-    println("Música parada.");
   }
 }
+
+/*
+void processSelectedFile(File selection) {
+ if (selection == null) {
+ println("Nenhum arquivo selecionado.");
+ } else {
+ selectFile = selection;
+ player = minim.loadFile(selectFile.getAbsolutePath(), 1024);
+ fft = new FFT(player.bufferSize(), player.sampleRate());
+ carregarbase();
+ }
+ }*/

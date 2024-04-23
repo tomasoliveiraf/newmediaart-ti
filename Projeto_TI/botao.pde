@@ -1,4 +1,4 @@
-
+/*
 void setupBotoes() {
   playButton = new Button(width / 2 - 50, height - 100, 100, 50, "Play");
   stopButton = new Button(width / 2 + 50, height - 100, 100, 50, "Stop");
@@ -34,4 +34,4 @@ class Button {
     textAlign(CENTER, CENTER);
     text(label, x + w / 2, y + h / 2);
   }
-}
+}*/

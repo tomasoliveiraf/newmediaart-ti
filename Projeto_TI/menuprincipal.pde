@@ -22,7 +22,7 @@ void menu() {
   
   fill(0);
   textSize(50);
-  text("SOUND CENAS", width/3, 350);
+  text("ApitoMaster3000", width/3, 350);
 
   // Verificar a distância recebida do Arduino
   if (myPort != null && myPort.available() > 0) {

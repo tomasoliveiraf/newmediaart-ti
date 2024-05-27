@@ -52,8 +52,8 @@ void base() {
 
 void keyPressed() {
   if (keyCode == LEFT) {
-    lineThickness = max(1, lineThickness - 1); // Diminui a espessura, mínimo de 1
+    lineThickness = max(1, lineThickness - 1); 
   } else if (keyCode == RIGHT) {
-    lineThickness = min(25, lineThickness + 1); // Aumenta a espessura, máximo de 15
+    lineThickness = min(25, lineThickness + 1);
   }
 }

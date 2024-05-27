@@ -25,6 +25,8 @@ Button stopButton;
 AudioPlayer player;
 int currentSong = -1;
 
+float lineThickness = 1;
+
 
 void setup() {
   size(800, 800);

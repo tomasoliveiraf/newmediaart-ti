@@ -5,14 +5,14 @@ void carregarmenuprincipal() {
   carregar = true;
 
 
-  String[] portNames = Serial.list();
+  /*String[] portNames = Serial.list();
   if (portNames.length > 0) {
     String portName = portNames[0];
     myPort = new Serial(this, "/dev/cu.usbserial-14110", 9600);
     println("Conectado à porta serial: " + "COM7");
   } else {
     println("Nenhuma porta serial disponível.");
-  }
+  }*/
 }
 
 void menu() {

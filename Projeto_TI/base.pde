@@ -34,7 +34,7 @@ void desenharLinhas() {
       float noiseValue = noise(i * lacunarity * 0.1, frameCount * 0.01 * scale);
       float distorcao = distortion * noiseValue * 2;
       float xEnd = map(amplitude + distorcao, 0, 256 + distortion, 0, width);
-      strokeWeight(max(amplitude / 10, 1));
+      strokeWeight(max(amplitude / 10, lineThickness));
       stroke(0);
       line(0, i * espacamento, xEnd * 20, i * espacamento);
     }
@@ -48,4 +48,12 @@ void desenharLinhas() {
 
 void base() {
   desenharLinhas();
+}
+
+void keyPressed() {
+  if (keyCode == LEFT) {
+    lineThickness = max(1, lineThickness - 1); // Diminui a espessura, mínimo de 1
+  } else if (keyCode == RIGHT) {
+    lineThickness = min(25, lineThickness + 1); // Aumenta a espessura, máximo de 15
+  }
 }

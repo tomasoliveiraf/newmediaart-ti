@@ -55,8 +55,8 @@ void loop() {
     digitalWrite(ledPin, LOW);
   }
 
-  Serial.print("Sensor de proximidade: ");
-  Serial.println(distance);
+  Serial.print(distance);
+  Serial.print(",");
 
   //___________________________CAPACITOR__TOUCH______________
   //ver se há necessidade de acresecentar o led porque o touch é meio manhoso
@@ -65,9 +65,12 @@ void loop() {
 
   if (total1 > 450) {
     digitalWrite(ledPinT, HIGH);
-    Serial.println("Touch");
+    Serial.print("Touch");
+    Serial.print(",");
   } else {
     digitalWrite(ledPinT, LOW);
+     Serial.print("NoTouch");
+    Serial.print(",");
   }
   // arbitrary delay to limit data to serial port
   delay(10);
@@ -75,14 +78,18 @@ void loop() {
   //____________________________POTENCIOMETRO______________________
   //esgalha valores entre 0 e 255
   val = analogRead(analogPin);
+  int val2 = val / 4;
+  Serial.print(val2);
+  Serial.print(",");
+
   // Verifica se o valor atual do potenciômetro é diferente do valor anterior
-  if (val != previousVal) {
+  /*if (val != previousVal) {
     // Atualiza o valor anterior para o atual
     previousVal = val;
     int val2 = val / 4;
-    Serial.print("Potenciômetro: ");
-    Serial.println(val2);
-  }
+    Serial.print(val2);
+    Serial.print(",");
+  }*/
 
   //______________JOYSTICK____________
   // read analog X and Y analog values
@@ -90,9 +97,8 @@ void loop() {
   yValue = analogRead(VRY_PIN);
 
   // print data to Serial Monitor on Arduino IDE
-  Serial.print("x = ");
   Serial.print(xValue);
-  Serial.print(", y = ");
+  Serial.print(",");
   Serial.println(yValue);
   delay(200);
 }

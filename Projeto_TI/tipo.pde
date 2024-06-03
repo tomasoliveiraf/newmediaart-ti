@@ -13,5 +13,5 @@ void tipo() {
   font = createFont("Futura Bold font", 128);
   textFont(font);
   textSize(40);
-  text("Tecnologias da Interface 2024", 30, 30);
+  text("ApitoMaster3000", 30, 30);
 }

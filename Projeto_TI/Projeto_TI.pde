@@ -42,10 +42,11 @@ void setup() {
 
   //esgalhar porta
   //ines
-  myPort = new Serial(this, "/dev/cu.usbserial-14110", 9600);
+  
   //myPort.bufferUntil(10);
 
   //myPort = new Serial(this, "/dev/cu.usbserial-14110", 9600);
+  //myPort = new Serial(this, "COM7", 9600);
 
   minim = new Minim(this);
   /*
@@ -80,7 +81,7 @@ void draw() {
   }
   
     //receber e fazer split dos dados do arduino
-
+/*
   if (myPort.available() > 0) {
     String value = myPort.readStringUntil('\n');
 
@@ -111,7 +112,7 @@ void draw() {
       }
     }
   }
-  
+ */ 
 }
 
 void mousePressed() {

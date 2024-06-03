@@ -11,6 +11,7 @@ String[] songNames = {
 
 void carregarescolha() {
   carregar = true;
+  
   rectY = height / 2 - 40 / 2;
 
   for (int i = 0; i < 5; i++) {

@@ -26,6 +26,10 @@ int previousVal = 0;
 int xValue = 0;  // To store value of the X axis
 int yValue = 0;  // To store value of the Y axis
 
+long ellapsed;
+int maxX = 0, maxY = 0, minX = 1024, minY = 1024;
+
+
 void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
@@ -33,6 +37,32 @@ void setup() {
   pinMode(ledPinT, OUTPUT);
   cs_5_6.set_CS_AutocaL_Millis(0xFFFFFFFF);
   Serial.begin(9600);
+
+
+  ellapsed = millis();
+
+  // Calibração: valores máximos e mínimos enquanto está parado
+  while ((millis() - ellapsed) < 10000) {
+    // Ler os valores analógicos do joystick
+    int X = analogRead(VRX_PIN);
+    int Y = analogRead(VRY_PIN);
+    if (X > maxX) maxX = X;
+    if (X < minX) minX = X;
+    if (Y > maxY) maxY = Y;
+    if (Y < minY) minY = Y;
+  }
+
+  // Imprimir os valores calibrados
+  /*Serial.print("Calibração Completa:\n");
+  Serial.print("Max X: ");
+  Serial.println(maxX);
+  Serial.print("Min X: ");
+  Serial.println(minX);
+  Serial.print("Max Y: ");
+  Serial.println(maxY);
+  Serial.print("Min Y: ");
+  Serial.println(minY);
+*/
 }
 
 void loop() {
@@ -55,6 +85,11 @@ void loop() {
     digitalWrite(ledPin, LOW);
   }
 
+  //tentar que mesmo que não haja valor ele imprima algo
+  /*if (distance == -1) {
+    Serial.print("100");
+  }*/
+
   Serial.print(distance);
   Serial.print(",");
 
@@ -69,11 +104,9 @@ void loop() {
     Serial.print(",");
   } else {
     digitalWrite(ledPinT, LOW);
-     Serial.print("NoTouch");
+    Serial.print("NoTouch");
     Serial.print(",");
   }
-  // arbitrary delay to limit data to serial port
-  delay(10);
 
   //____________________________POTENCIOMETRO______________________
   //esgalha valores entre 0 e 255
@@ -92,13 +125,20 @@ void loop() {
   }*/
 
   //______________JOYSTICK____________
-  // read analog X and Y analog values
+  // Ler os valores do joystick
   xValue = analogRead(VRX_PIN);
   yValue = analogRead(VRY_PIN);
 
-  // print data to Serial Monitor on Arduino IDE
-  Serial.print(xValue);
+  // Mapear os valores lidos para uma faixa de 0 a 100
+  int mappedX = map(xValue, minX, maxX, 0, 100);
+  int mappedY = map(yValue, minY, maxY, 0, 100);
+
+  // Limitar os valores mapeados para a faixa de 0 a 100
+  mappedX = constrain(mappedX, 0, 100);
+  mappedY = constrain(mappedY, 0, 100);
+
+  // Imprimir os valores mapeados
+  Serial.print(mappedX);
   Serial.print(",");
-  Serial.println(yValue);
-  delay(200);
+  Serial.println(mappedY);
 }

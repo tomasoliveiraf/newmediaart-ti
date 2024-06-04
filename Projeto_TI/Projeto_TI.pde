@@ -42,8 +42,9 @@ void setup() {
 
   //esgalhar porta
   //ines
+  myPort = new Serial(this, "/dev/cu.usbserial-14220", 9600);
   
-  //myPort.bufferUntil(10);
+  myPort.bufferUntil(30);
 
   //myPort = new Serial(this, "/dev/cu.usbserial-14110", 9600);
   //myPort = new Serial(this, "COM7", 9600);
@@ -81,7 +82,7 @@ void draw() {
   }
   
     //receber e fazer split dos dados do arduino
-/*
+
   if (myPort.available() > 0) {
     String value = myPort.readStringUntil('\n');
 
@@ -99,6 +100,9 @@ void draw() {
       int joyX = Integer.parseInt(pieces[3].trim());
       //x do joystick
       int joyY = Integer.parseInt(pieces[4].trim());
+      
+      //calibrar joystick
+      
 
       //visualizar valores na consola
       println("sensor " + senProx);
@@ -112,7 +116,7 @@ void draw() {
       }
     }
   }
- */ 
+
 }
 
 void mousePressed() {

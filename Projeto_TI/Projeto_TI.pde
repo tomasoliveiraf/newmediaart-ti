@@ -1,4 +1,3 @@
-
 import processing.serial.*;
 
 import ddf.minim.*;
@@ -8,17 +7,6 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
-int nivel = 0;
-
-//variaveis dos valores do arduino
-/*int senProx, potenci, joyX, joyY;
-String touch;*/
-
-
-boolean carregar = false;
-boolean[] rectOver = new boolean[5];
-boolean isPlaying = false;
-
 File selectFile;
 Minim minim;
 AudioPlayer[] songs = new AudioPlayer[5];
@@ -26,16 +14,26 @@ FFT fft;
 
 Serial myPort;
 
-/*
-Button playButton;
- Button stopButton;
- */
+int nivel = 0;
+
+//variaveis dos valores do arduino
+/*int senProx, potenci, joyX, joyY;
+ String touch;*/
+
+boolean carregar = false;
+boolean[] rectOver = new boolean[5];
+boolean isPlaying = false;
+
 
 AudioPlayer player;
 int currentSong = -1;
 
 float lineThickness = 1;
 
+//joystick
+PVector joifinal;
+int lastJoyX = -1;
+int lastJoyY = -1;
 
 void setup() {
   size(800, 800);
@@ -43,17 +41,12 @@ void setup() {
   //esgalhar porta
   //ines
   myPort = new Serial(this, "/dev/cu.usbserial-14220", 9600);
-  
-  myPort.bufferUntil(30);
+  myPort.bufferUntil('\n');
 
-  //myPort = new Serial(this, "/dev/cu.usbserial-14110", 9600);
   //myPort = new Serial(this, "COM7", 9600);
 
   minim = new Minim(this);
-  /*
-  playButton = new Button(width / 2 - 50, height - 100, 100, 50, "Play");
-   stopButton = new Button(width / 2 + 50, height - 100, 100, 50, "Stop");
-   */
+
   for (int i = 0; i < songNames.length; i++) {
     songs[i] = minim.loadFile(songNames[i], 1024);
 
@@ -63,12 +56,12 @@ void setup() {
     songs[3] = minim.loadFile("MARIACHI FUNK.mp3");
     songs[4] = minim.loadFile("Xutos e Pontapés - Ai Se Ele Cai.mp3");
   }
+  
+    joifinal = new PVector(width/2, height/2);
 }
 
 void draw() {
-
   background(255);
-
 
   if (nivel == 0) {
     menu();
@@ -80,59 +73,85 @@ void draw() {
   } else if (nivel == 3) {
     tipo();
   }
-  
-    //receber e fazer split dos dados do arduino
 
+
+  //receber e fazer split dos dados do arduino
   if (myPort.available() > 0) {
     String value = myPort.readStringUntil('\n');
-
-    //ordem dos valores "sensorProximidade, Touch, Potenciometro, xdoJoystick, ydoJoystick"
-
+    
     if (value != null) {
       String[] pieces = value.split(",");
-      //Sensor de Proximidade
-      int senProx = Integer.parseInt(pieces[0].trim()); //está a tornar uma parte de uma string (pieces) num int
-      //Touch
-      String touch = pieces[1];
-      //potenciometro
-      int potenci = Integer.parseInt(pieces[2].trim());
-      //x do joystick
-      int joyX = Integer.parseInt(pieces[3].trim());
-      //x do joystick
-      int joyY = Integer.parseInt(pieces[4].trim());
       
-      //calibrar joystick
-      
+      if (pieces.length == 5) {
+        
+        
+        // Sensor de Proximidade
+        int senProx = Integer.parseInt(pieces[0].trim());
+        
+        // Touch
+        String touch = pieces[1].trim();
+        
+        // Potenciômetro
+        int potenci = Integer.parseInt(pieces[2].trim());
+        
+        // X e Y do joystick
+        int joyX = Integer.parseInt(pieces[3].trim());
+        int joyY = Integer.parseInt(pieces[4].trim());
 
-      //visualizar valores na consola
-      println("sensor " + senProx);
-      println("touch " + touch);
-      println("potenciometro " + potenci);
-      println("joyX " + joyX);
-      println("joyY " + joyY);
-      
-      if(nivel == 0 && senProx <= 50){
-        nivel = 1;
+
+        // Só atualizar se os valores do joystick tiverem mudado
+        if (joyX != lastJoyX || joyY != lastJoyY) {
+          lastJoyX = joyX;
+          lastJoyY = joyY;
+
+          // Mapeamento dos valores do joystick
+          float mappedJoyX = map(joyX, 0, 100, -5, 5);
+          float mappedJoyY = map(joyY, 0, 100, -5, 5);
+
+          joifinal.add(mappedJoyX, mappedJoyY);
+
+          // Garantir que a elipse não saia dos limites da tela
+          joifinal.x = constrain(joifinal.x, 0, width);
+          joifinal.y = constrain(joifinal.y, 0, height);
+        }
+
+        // Visualizar valores na consola
+        //println("sensor :" + senProx + ",touch :" + touch + ",potenciometro :" + potenci + ",joyX :" + joyX + ",joyY :" + joyY);
+        //println(senProx + "," + touch + "," + potenci + "," + joyX + "," + joyY);
+        println("sensor " + senProx);
+        println("touch " + touch);
+        println("potenciometro " + potenci);
+        println("joyX " + joyX);
+        println("joyY " + joyY);
+
+        if (nivel == 0 && senProx <= 50) {
+          nivel = 1;
+        }
       }
     }
   }
 
+  //desenhar "rato"
+  fill(0);
+  ellipse(joifinal.x, joifinal.y, 20, 20);
 }
 
-void mousePressed() {
-  for (int i = 0; i < 5; i++) {
-    if (rectOver[i]) {
-      selectFile = new File(dataPath(songNames[i]));
-      if (selectFile.exists()) {
-        currentSong = i;
-        carregarbase();
-        nivel = 2;
-      }
 
-      break;
-    }
-  }
-}
+
+/*void mousePressed() {
+ for (int i = 0; i < 5; i++) {
+ if (rectOver[i]) {
+ selectFile = new File(dataPath(songNames[i]));
+ if (selectFile.exists()) {
+ currentSong = i;
+ carregarbase();
+ nivel = 2;
+ }
+ 
+ break;
+ }
+ }
+ }*/
 
 
 void playMusic() {

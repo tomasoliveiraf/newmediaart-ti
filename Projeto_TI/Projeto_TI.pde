@@ -40,7 +40,7 @@ void setup() {
 
   //esgalhar porta
   //ines
-  myPort = new Serial(this, "/dev/cu.usbserial-14220", 9600);
+  myPort = new Serial(this, "/dev/cu.usbserial-14210", 9600);
   myPort.bufferUntil('\n');
 
   //myPort = new Serial(this, "COM7", 9600);
@@ -93,6 +93,7 @@ void draw() {
         
         // Potenciômetro
         int potenci = Integer.parseInt(pieces[2].trim());
+        lineThickness = map(potenci, 0, 255, 1, 25);
         
         // X e Y do joystick
         int joyX = Integer.parseInt(pieces[3].trim());

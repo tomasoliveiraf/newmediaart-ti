@@ -85,10 +85,6 @@ void loop() {
     digitalWrite(ledPin, LOW);
   }
 
-  //tentar que mesmo que não haja valor ele imprima algo
-  /*if (distance == -1) {
-    Serial.print("100");
-  }*/
 
   Serial.print(distance);
   Serial.print(",");

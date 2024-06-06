@@ -40,10 +40,10 @@ void setup() {
 
   //esgalhar porta
   //ines
-  //myPort = new Serial(this, "/dev/cu.usbmodem142101", 9600);
-  //myPort.bufferUntil('\n');
+  myPort = new Serial(this, "/dev/cu.usbmodem142101", 9600);
+  myPort.bufferUntil('\n');
 
-  myPort = new Serial(this, "COM10", 9600);
+  //myPort = new Serial(this, "COM10", 9600);
 
   minim = new Minim(this);
 
@@ -121,9 +121,11 @@ void draw() {
       }
 
       // Verificar o estado do touch e simular um clique na posição da elipse se for "touch"
-      if (touch.equals("touch")) {
+      if (touch.equals("Touch") == true) {
         touchClick(joifinal.x, joifinal.y);
-        background(255, 0, 0);
+        //background(0);
+      }else{
+        //background(255);
       }
     }
   }

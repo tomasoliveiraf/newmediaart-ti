@@ -39,8 +39,9 @@ void desenharLinhas() {
       float distorcao = 5 * amplitude;
       largura += distorcao;
 
+      
       strokeWeight(max(amplitude / 10, lineThickness));
-      stroke(0);
+      stroke(255, 215, 88);
       line(0, i * espacamento + 20, largura * width, i * espacamento + 20);
       lineYPositions[i] = i * espacamento;
     }

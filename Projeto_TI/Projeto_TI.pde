@@ -92,7 +92,7 @@ void draw() {
 
       // Potenciômetro
       int potenci = Integer.parseInt(pieces[2].trim());
-      //lineThickness = map(potenci, 0, 255, 1, 25);
+      lineThickness = map(potenci, 0, 255, 1, 25);
 
       // X e Y do joystick
       PVector joydir = new PVector();

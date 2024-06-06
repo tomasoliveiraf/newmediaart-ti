@@ -1,4 +1,3 @@
-
 PVector[] linhas;
 float[] lineYPositions;
 

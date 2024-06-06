@@ -40,7 +40,7 @@ void setup() {
 
   //esgalhar porta
   //ines
-  myPort = new Serial(this, "/dev/cu.usbserial-14210", 9600);
+  myPort = new Serial(this, "/dev/cu.usbmodem142101", 9600);
   myPort.bufferUntil('\n');
 
   //myPort = new Serial(this, "COM7", 9600);
@@ -67,7 +67,6 @@ void draw() {
     menu();
   } else if (nivel == 1) {
     escolha();
-
   } else if (nivel == 2) {
     base();
     //desenharBotoes();
@@ -93,41 +92,42 @@ void draw() {
 
       // Potenciômetro
       int potenci = Integer.parseInt(pieces[2].trim());
-      lineThickness = map(potenci, 0, 255, 1, 25);
+      //lineThickness = map(potenci, 0, 255, 1, 25);
 
       // X e Y do joystick
       PVector joydir = new PVector();
-      joydir.x = (int(pieces[3])/512.0)*5;
-      joydir.y = (int(pieces[4])/512.0)*5;
-
+      joydir.x = map(Integer.parseInt(pieces[3].trim()), -512, 512, -10, 10);
+      joydir.y = map(Integer.parseInt(pieces[4].trim()), -512, 512, 10, -10);
 
       joifinal.add(joydir);
-
+      
+      
       // Garantir que a elipse não saia dos limites da tela
       joifinal.x = constrain(joifinal.x, 20, width-20);
       joifinal.y = constrain(joifinal.y, 20, height-20);
-    }
 
-    // Visualizar valores na consola
-    //println("sensor :" + senProx + ",touch :" + touch + ",potenciometro :" + potenci + ",joyX :" + joyX + ",joyY :" + joyY);
-    //println(senProx + "," + touch + "," + potenci + "," + joyX + "," + joyY);
-    println("sensor " + senProx);
-    println("touch " + touch);
-    println("potenciometro " + potenci);
-    println("joyX " + joyX);
-    println("joyY " + joyY);
 
-    if (nivel == 0 && senProx <= 50) {
-      nivel = 1;
-    }
+      // Visualizar valores na consola
+      //println("sensor :" + senProx + ",touch :" + touch + ",potenciometro :" + potenci + ",joyX :" + joyX + ",joyY :" + joyY);
+      //println(senProx + "," + touch + "," + potenci + "," + joyX + "," + joyY);
+      println("sensor " + senProx);
+      println("touch " + touch);
+      println("potenciometro " + potenci);
+      println("joyX " + joifinal.x);
+      println("joyY " + joifinal.y);
 
-    // Verificar o estado do touch e simular um clique na posição da elipse se for "touch"
-    if (touch.equals("touch")) {
-      touchClick(joifinal.x, joifinal.y);
+      if (nivel == 0 && senProx <= 50) {
+        nivel = 1;
+      }
+
+      // Verificar o estado do touch e simular um clique na posição da elipse se for "touch"
+      if (touch.equals("touch")) {
+        touchClick(joifinal.x, joifinal.y);
+      }
     }
   }
 }
-}
+
 
 // Método para simular clique do mouse
 void touchClick(float x, float y) {
@@ -185,15 +185,3 @@ void stopMusic() {
     isPlaying = false;
   }
 }
-
-/*
-void processSelectedFile(File selection) {
- if (selection == null) {
- println("Nenhum arquivo selecionado.");
- } else {
- selectFile = selection;
- player = minim.loadFile(selectFile.getAbsolutePath(), 1024);
- fft = new FFT(player.bufferSize(), player.sampleRate());
- carregarbase();
- }
- }*/

@@ -1,4 +1,3 @@
-
 int[] rectX = new int[5];
 int rectY;
 String[] songNames = {
@@ -24,8 +23,6 @@ void escolha() {
     carregarescolha();
   }
 
-  //desenhar "rato" do joystick
-  ellipse(joifinal.x, joifinal.y, 20, 20);
 
   //ewcolher musica
   fill(0);
@@ -42,6 +39,9 @@ void escolha() {
     textSize(20);
     text(songNames[i], rectX[i] + width/5, rectY + 25 + i * 50 + height / 2);
   }
+  
+  //desenhar "rato" do joystick
+  ellipse(joifinal.x, joifinal.y, 20, 20);
 }
 
 void update(int x, int y) {
@@ -68,4 +68,4 @@ void fileSelected(File selection) {
  } else {
  println("User selected " + selection.getAbsolutePath());
  }
- }*/
+ }

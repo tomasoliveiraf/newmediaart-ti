@@ -39,7 +39,7 @@ void escolha() {
     textSize(20);
     text(songNames[i], rectX[i] + width/5, rectY + 25 + i * 50 + height / 2);
   }
-  
+
   //desenhar "rato" do joystick
   ellipse(joifinal.x, joifinal.y, 20, 20);
 }
@@ -60,12 +60,13 @@ boolean overRect(int x, int y, int width, int height) {
     return false;
   }
 }
-/*
-void fileSelected(File selection) {
- 
- if (selection == null) {
- println("Window was closed or the user hit cancel.");
- } else {
- println("User selected " + selection.getAbsolutePath());
- }
- }
+
+
+/*void fileSelected(File selection) {
+
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("User selected " + selection.getAbsolutePath());
+  }
+}*/

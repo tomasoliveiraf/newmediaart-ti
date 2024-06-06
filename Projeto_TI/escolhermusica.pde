@@ -27,7 +27,6 @@ void escolha() {
   //ewcolher musica
   fill(0);
   textSize(50);
-  textFont(font);
   text("Choose a song", width / 3, 350);
 
   update(joifinal.x, joifinal.y);

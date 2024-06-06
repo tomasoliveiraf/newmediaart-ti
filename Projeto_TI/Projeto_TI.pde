@@ -34,11 +34,9 @@ float lineThickness = 1;
 PVector joifinal;
 int lastJoyX = -1;
 int lastJoyY = -1;
-PFont font;
 
 void setup() {
   size(800, 800);
-  font = createFont("Retro Gaming", 128);
 
   //esgalhar porta
   //ines

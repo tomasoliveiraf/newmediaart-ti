@@ -29,7 +29,7 @@ void escolha() {
   textSize(50);
   text("Choose a song", width / 3, 350);
 
-  update(mouseX, mouseY);
+  update(joifinal.x, joifinal.y);
 
   for (int i = 0; i < 5; i++) {
     fill(255);
@@ -44,20 +44,9 @@ void escolha() {
   ellipse(joifinal.x, joifinal.y, 20, 20);
 }
 
-void update(int x, int y) {
+void update(float x, float y) {
   for (int i = 0; i < 5; i++) {
-    rectOver[i] = mouseX > rectX[i] && mouseX < rectX[i] + 500 && mouseY > rectY + i * 50 + height / 2 && mouseY < rectY + 40 + i * 50 + height / 2;
-  }
-}
-
-
-boolean overRect(int x, int y, int width, int height) {
-
-  if (mouseX >= x && mouseX <= x+width &&
-    mouseY >= y && mouseY <= y+height) {
-    return true;
-  } else {
-    return false;
+    rectOver[i] = x > rectX[i] + width / 5 && x < rectX[i] + width / 5 + 500 && y > rectY + i * 50 + height / 2 && y < rectY + 40 + i * 50 + height / 2;
   }
 }
 

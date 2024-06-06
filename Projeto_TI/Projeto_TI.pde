@@ -40,10 +40,10 @@ void setup() {
 
   //esgalhar porta
   //ines
-  myPort = new Serial(this, "/dev/cu.usbmodem142101", 9600);
-  myPort.bufferUntil('\n');
+  //myPort = new Serial(this, "/dev/cu.usbmodem142101", 9600);
+  //myPort.bufferUntil('\n');
 
-  //myPort = new Serial(this, "COM7", 9600);
+  myPort = new Serial(this, "COM10", 9600);
 
   minim = new Minim(this);
 
@@ -123,6 +123,7 @@ void draw() {
       // Verificar o estado do touch e simular um clique na posição da elipse se for "touch"
       if (touch.equals("touch")) {
         touchClick(joifinal.x, joifinal.y);
+        background(255, 0, 0);
       }
     }
   }
@@ -131,14 +132,6 @@ void draw() {
 
 // Método para simular clique do mouse
 void touchClick(float x, float y) {
-  // Salvar as coordenadas do mouse atuais
-  int mouseXTemp = mouseX;
-  int mouseYTemp = mouseY;
-
-  // Atualizar as coordenadas do mouse para a posição da elipse
-  mouseX = int(x);
-  mouseY = int(y);
-
   for (int i = 0; i < 5; i++) {
     if (rectOver[i]) {
       selectFile = new File(dataPath(songNames[i]));
@@ -150,12 +143,8 @@ void touchClick(float x, float y) {
       break;
     }
   }
-
-  // Restaurar as coordenadas do mouse
-  mouseX = mouseXTemp;
-  mouseY = mouseYTemp;
 }
-
+/*
 //só para quando o touch não está a funcionar
 void mousePressed() {
   for (int i = 0; i < 5; i++) {
@@ -169,7 +158,7 @@ void mousePressed() {
       break;
     }
   }
-}
+}*/
 
 
 void playMusic() {

@@ -1,6 +1,5 @@
 void carregarmenuprincipal() {
   carregar = true;
-  
 }
 
 
@@ -8,9 +7,6 @@ void menu() {
   if (!carregar) {
     carregarmenuprincipal();
   }
-  
-  fill(0);
-  textSize(50);
-  text("ApitoMaster3000", width/3 - 30, height/2);
 
+  image(apito, width/2-150, height/2-100, 300, 200);
 }

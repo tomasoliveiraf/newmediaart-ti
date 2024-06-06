@@ -16,9 +16,9 @@ Serial myPort;
 
 int nivel = 0;
 
-//variaveis dos valores do arduino
-/*int senProx, potenci, joyX, joyY;
- String touch;*/
+PImage bg, apito, filtro;
+PFont font;
+font = createFont("Retro Gaming.ttf", 128);
 
 boolean carregar = false;
 boolean[] rectOver = new boolean[5];
@@ -37,6 +37,10 @@ int lastJoyY = -1;
 
 void setup() {
   size(800, 800);
+
+  bg = loadImage("bgquad.png");
+  apito = loadImage("apito.png");
+  filtro = loadImage("filtroquad.png");
 
   //esgalhar porta
   //ines
@@ -61,7 +65,7 @@ void setup() {
 }
 
 void draw() {
-  background(255);
+  background(bg);
 
   if (nivel == 0) {
     menu();
@@ -100,8 +104,8 @@ void draw() {
       joydir.y = map(Integer.parseInt(pieces[4].trim()), -512, 512, 10, -10);
 
       joifinal.add(joydir);
-      
-      
+
+
       // Garantir que a elipse não saia dos limites da tela
       joifinal.x = constrain(joifinal.x, 20, width-20);
       joifinal.y = constrain(joifinal.y, 20, height-20);
@@ -124,11 +128,12 @@ void draw() {
       if (touch.equals("Touch") == true) {
         touchClick(joifinal.x, joifinal.y);
         //background(0);
-      }else{
+      } else {
         //background(255);
       }
     }
   }
+  image(filtro, 0, 0);
 }
 
 
@@ -148,19 +153,19 @@ void touchClick(float x, float y) {
 }
 /*
 //só para quando o touch não está a funcionar
-void mousePressed() {
-  for (int i = 0; i < 5; i++) {
-    if (rectOver[i]) {
-      selectFile = new File(dataPath(songNames[i]));
-      if (selectFile.exists()) {
-        currentSong = i;
-        carregarbase();
-        nivel = 2;
-      }
-      break;
-    }
-  }
-}*/
+ void mousePressed() {
+ for (int i = 0; i < 5; i++) {
+ if (rectOver[i]) {
+ selectFile = new File(dataPath(songNames[i]));
+ if (selectFile.exists()) {
+ currentSong = i;
+ carregarbase();
+ nivel = 2;
+ }
+ break;
+ }
+ }
+ }*/
 
 
 void playMusic() {

@@ -10,7 +10,7 @@ void tipo() {
   }
 
   PFont font;
-  font = createFont("Futura Bold font", 128);
+  font = createFont("Retro Gaming", 128);
   textFont(font);
   textSize(40);
   text("ApitoMaster3000", 30, 30);

@@ -100,8 +100,8 @@ void draw() {
       joydir.y = map(Integer.parseInt(pieces[4].trim()), -512, 512, 10, -10);
 
       joifinal.add(joydir);
-
-
+      
+      
       // Garantir que a elipse não saia dos limites da tela
       joifinal.x = constrain(joifinal.x, 20, width-20);
       joifinal.y = constrain(joifinal.y, 20, height-20);
@@ -124,7 +124,7 @@ void draw() {
       if (touch.equals("Touch") == true) {
         touchClick(joifinal.x, joifinal.y);
         //background(0);
-      } else {
+      }else{
         //background(255);
       }
     }
@@ -141,38 +141,26 @@ void touchClick(float x, float y) {
         currentSong = i;
         carregarbase();
         nivel = 2;
-        stopMusic(); // Para a música ao mudar para o nível 2
-        nivel = 3; // Muda para o nível 3
-        salvarImagem(); // Salva a imagem quando o touch é clicado
       }
       break;
     }
   }
 }
-
-void salvarImagem() {
-  // Cria um nome de pasta baseado no tempo atual
-  String nomePastaOutput = str(millis());
-  // Cria o diretório para salvar as imagens
-  new File(sketchPath("exportacao/" + nomePastaOutput)).mkdirs();
-  // Salva a imagem com base no tempo atual e no número de frames
-  saveFrame(sketchPath("exportacao/" + nomePastaOutput + "/" + nf(frameCount, 6) + ".jpg"));
-}
 /*
 //só para quando o touch não está a funcionar
- void mousePressed() {
- for (int i = 0; i < 5; i++) {
- if (rectOver[i]) {
- selectFile = new File(dataPath(songNames[i]));
- if (selectFile.exists()) {
- currentSong = i;
- carregarbase();
- nivel = 2;
- }
- break;
- }
- }
- }*/
+void mousePressed() {
+  for (int i = 0; i < 5; i++) {
+    if (rectOver[i]) {
+      selectFile = new File(dataPath(songNames[i]));
+      if (selectFile.exists()) {
+        currentSong = i;
+        carregarbase();
+        nivel = 2;
+      }
+      break;
+    }
+  }
+}*/
 
 
 void playMusic() {

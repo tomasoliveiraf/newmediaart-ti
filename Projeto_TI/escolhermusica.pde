@@ -11,7 +11,7 @@ String[] songNames = {
 
 void carregarescolha() {
   carregar = true;
-  
+
   rectY = height / 2 - 40 / 2;
 
   for (int i = 0; i < 5; i++) {
@@ -24,6 +24,10 @@ void escolha() {
     carregarescolha();
   }
 
+  //desenhar "rato" do joystick
+  ellipse(joifinal.x, joifinal.y, 20, 20);
+
+  //ewcolher musica
   fill(0);
   textSize(50);
   text("Choose a song", width / 3, 350);

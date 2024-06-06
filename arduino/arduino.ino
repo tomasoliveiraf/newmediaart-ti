@@ -23,9 +23,6 @@ int previousVal = 0;
 #define VRX_PIN A0  // Arduino pin connected to VRX pin
 #define VRY_PIN A1  // Arduino pin connected to VRY pin
 
-int xValue = 0;  // To store value of the X axis
-int yValue = 0;  // To store value of the Y axis
-
 long ellapsed;
 int maxX = 0, maxY = 0, minX = 1024, minY = 1024;
 
@@ -66,6 +63,7 @@ void setup() {
 }
 
 void loop() {
+  String dataString = "";
 
   //_______________________SENSOR PROXIMIDADE_____________________
   digitalWrite(trigPin, LOW);
@@ -85,9 +83,11 @@ void loop() {
     digitalWrite(ledPin, LOW);
   }
 
+  /*Serial.print(distance);
+  Serial.print(",");*/
 
-  Serial.print(distance);
-  Serial.print(",");
+  dataString += String(distance) + ",";
+
 
   //___________________________CAPACITOR__TOUCH______________
   //ver se há necessidade de acresecentar o led porque o touch é meio manhoso
@@ -96,20 +96,23 @@ void loop() {
 
   if (total1 > 450) {
     digitalWrite(ledPinT, HIGH);
-    Serial.print("Touch");
-    Serial.print(",");
+    /*Serial.print("Touch");
+    Serial.print(",");*/
+    dataString += "Touch,";
   } else {
     digitalWrite(ledPinT, LOW);
-    Serial.print("NoTouch");
-    Serial.print(",");
+    /*Serial.print("NoTouch");
+    Serial.print(",");*/
+    dataString += "NoTouch,";
   }
 
   //____________________________POTENCIOMETRO______________________
   //esgalha valores entre 0 e 255
   val = analogRead(analogPin);
   int val2 = val / 4;
-  Serial.print(val2);
-  Serial.print(",");
+  /*Serial.print(val2);
+  Serial.print(",");*/
+  dataString += String(val2) + ",";
 
   // Verifica se o valor atual do potenciômetro é diferente do valor anterior
   /*if (val != previousVal) {
@@ -121,20 +124,29 @@ void loop() {
   }*/
 
   //______________JOYSTICK____________
-  // Ler os valores do joystick
-  xValue = analogRead(VRX_PIN);
-  yValue = analogRead(VRY_PIN);
 
-  // Mapear os valores lidos para uma faixa de 0 a 100
-  int mappedX = map(xValue, minX, maxX, 0, 100);
-  int mappedY = map(yValue, minY, maxY, 0, 100);
+  if (millis() - ellapsed > 100) {
+    int X = analogRead(VRX_PIN);
+    int Y = analogRead(VRY_PIN);
+    int XSend = 0, YSend = 0;
 
-  // Limitar os valores mapeados para a faixa de 0 a 100
-  mappedX = constrain(mappedX, 0, 100);
-  mappedY = constrain(mappedY, 0, 100);
+    ellapsed = millis();
 
-  // Imprimir os valores mapeados
-  Serial.print(mappedX);
-  Serial.print(",");
-  Serial.println(mappedY);
+    if ((X < minX) || (X > maxX)) {
+      XSend = X - 512;
+    }
+    if ((Y < minY) || (Y > maxY)) {
+      YSend = Y - 512;
+    }
+
+    // Imprimir os valores mapeados
+    /*Serial.print(XSend);
+    Serial.print(",");
+    Serial.println(YSend);*/
+    dataString += String(XSend) + ",";
+    dataString += String(YSend);
+  }
+
+  Serial.println(dataString);
+  delay(100);
 }

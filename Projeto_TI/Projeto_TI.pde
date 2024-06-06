@@ -56,8 +56,8 @@ void setup() {
     songs[3] = minim.loadFile("MARIACHI FUNK.mp3");
     songs[4] = minim.loadFile("Xutos e Pontapés - Ai Se Ele Cai.mp3");
   }
-  
-    joifinal = new PVector(width/2, height/2);
+
+  joifinal = new PVector(width/2, height/2);
 }
 
 void draw() {
@@ -67,6 +67,7 @@ void draw() {
     menu();
   } else if (nivel == 1) {
     escolha();
+
   } else if (nivel == 2) {
     base();
     //desenharBotoes();
@@ -78,81 +79,97 @@ void draw() {
   //receber e fazer split dos dados do arduino
   if (myPort.available() > 0) {
     String value = myPort.readStringUntil('\n');
-    
+
+    //ordem dos valores "sensorProximidade, Touch, Potenciometro, xdoJoystick, ydoJoystick"
+
     if (value != null) {
       String[] pieces = value.split(",");
-      
-      if (pieces.length == 5) {
-        
-        
-        // Sensor de Proximidade
-        int senProx = Integer.parseInt(pieces[0].trim());
-        
-        // Touch
-        String touch = pieces[1].trim();
-        
-        // Potenciômetro
-        int potenci = Integer.parseInt(pieces[2].trim());
-        lineThickness = map(potenci, 0, 255, 1, 25);
-        
-        // X e Y do joystick
-        int joyX = Integer.parseInt(pieces[3].trim());
-        int joyY = Integer.parseInt(pieces[4].trim());
+
+      // Sensor de Proximidade
+      int senProx = Integer.parseInt(pieces[0].trim()); //está a tornar uma parte de uma string (pieces) num int
+
+      // Touch
+      String touch = pieces[1].trim();
+
+      // Potenciômetro
+      int potenci = Integer.parseInt(pieces[2].trim());
+      lineThickness = map(potenci, 0, 255, 1, 25);
+
+      // X e Y do joystick
+      PVector joydir = new PVector();
+      joydir.x = (int(pieces[3])/512.0)*5;
+      joydir.y = (int(pieces[4])/512.0)*5;
 
 
-        // Só atualizar se os valores do joystick tiverem mudado
-        if (joyX != lastJoyX || joyY != lastJoyY) {
-          lastJoyX = joyX;
-          lastJoyY = joyY;
+      joifinal.add(joydir);
 
-          // Mapeamento dos valores do joystick
-          float mappedJoyX = map(joyX, 0, 100, -5, 5);
-          float mappedJoyY = map(joyY, 0, 100, -5, 5);
+      // Garantir que a elipse não saia dos limites da tela
+      joifinal.x = constrain(joifinal.x, 20, width-20);
+      joifinal.y = constrain(joifinal.y, 20, height-20);
+    }
 
-          joifinal.add(mappedJoyX, mappedJoyY);
+    // Visualizar valores na consola
+    //println("sensor :" + senProx + ",touch :" + touch + ",potenciometro :" + potenci + ",joyX :" + joyX + ",joyY :" + joyY);
+    //println(senProx + "," + touch + "," + potenci + "," + joyX + "," + joyY);
+    println("sensor " + senProx);
+    println("touch " + touch);
+    println("potenciometro " + potenci);
+    println("joyX " + joyX);
+    println("joyY " + joyY);
 
-          // Garantir que a elipse não saia dos limites da tela
-          joifinal.x = constrain(joifinal.x, 0, width);
-          joifinal.y = constrain(joifinal.y, 0, height);
-        }
+    if (nivel == 0 && senProx <= 50) {
+      nivel = 1;
+    }
 
-        // Visualizar valores na consola
-        //println("sensor :" + senProx + ",touch :" + touch + ",potenciometro :" + potenci + ",joyX :" + joyX + ",joyY :" + joyY);
-        //println(senProx + "," + touch + "," + potenci + "," + joyX + "," + joyY);
-        println("sensor " + senProx);
-        println("touch " + touch);
-        println("potenciometro " + potenci);
-        println("joyX " + joyX);
-        println("joyY " + joyY);
+    // Verificar o estado do touch e simular um clique na posição da elipse se for "touch"
+    if (touch.equals("touch")) {
+      touchClick(joifinal.x, joifinal.y);
+    }
+  }
+}
+}
 
-        if (nivel == 0 && senProx <= 50) {
-          nivel = 1;
-        }
+// Método para simular clique do mouse
+void touchClick(float x, float y) {
+  // Salvar as coordenadas do mouse atuais
+  int mouseXTemp = mouseX;
+  int mouseYTemp = mouseY;
+
+  // Atualizar as coordenadas do mouse para a posição da elipse
+  mouseX = int(x);
+  mouseY = int(y);
+
+  for (int i = 0; i < 5; i++) {
+    if (rectOver[i]) {
+      selectFile = new File(dataPath(songNames[i]));
+      if (selectFile.exists()) {
+        currentSong = i;
+        carregarbase();
+        nivel = 2;
       }
+      break;
     }
   }
 
-  //desenhar "rato"
-  fill(0);
-  ellipse(joifinal.x, joifinal.y, 20, 20);
+  // Restaurar as coordenadas do mouse
+  mouseX = mouseXTemp;
+  mouseY = mouseYTemp;
 }
 
-
-
-/*void mousePressed() {
- for (int i = 0; i < 5; i++) {
- if (rectOver[i]) {
- selectFile = new File(dataPath(songNames[i]));
- if (selectFile.exists()) {
- currentSong = i;
- carregarbase();
- nivel = 2;
- }
- 
- break;
- }
- }
- }*/
+//só para quando o touch não está a funcionar
+void mousePressed() {
+  for (int i = 0; i < 5; i++) {
+    if (rectOver[i]) {
+      selectFile = new File(dataPath(songNames[i]));
+      if (selectFile.exists()) {
+        currentSong = i;
+        carregarbase();
+        nivel = 2;
+      }
+      break;
+    }
+  }
+}
 
 
 void playMusic() {
